@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+TOKEN = "7049444312:AAEr1d-KXTz0mVR6QOPzRy-Nwa5NVk9o4rA"
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Hello! Type /fetchmembers to fetch members.')
