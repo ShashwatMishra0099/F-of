@@ -1,26 +1,28 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
-from telegram import ChatAction
 
-# Define a function to fetch members and their usernames
-def fetch_members(update: Update, context: CallbackContext):
-    chat_id = update.message.text.split()[1]
+TOKEN = "7049444312:AAEr1d-KXTz0mVR6QOPzRy-Nwa5NVk9o4rA"
 
-    # Send "typing" action while fetching data
-    context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
+def start(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text('Hello! Type /fetchmembers to fetch members.')
 
-    members = context.bot.get_chat_members_count(chat_id)
-    usernames = [member.user.username for member in context.bot.get_chat(chat_id).get_members()]
+def fetch_members(update: Update, context: CallbackContext) -> None:
+    try:
+        chat_id = -1002010714711
+        members_count = context.bot.get_chat_member_count(chat_id)
+        update.message.reply_text(f'The number of members in the chat: {members_count}')
+    except Exception as e:
+        update.message.reply_text('An error occurred while fetching members. Please try again later.')
 
-    update.message.reply_text(f"Total members in the group: {members}\nUsernames: {', '.join(usernames)}")
+def main() -> None:
+    updater = Updater(TOKEN)
+    dispatcher = updater.dispatcher
 
-# Set up the Telegram bot
-updater = Updater("7049444312:AAEr1d-KXTz0mVR6QOPzRy-Nwa5NVk9o4rA", use_context=True)
-dispatcher = updater.dispatcher
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("fetchmembers", fetch_members))
 
-# Register the command handler
-dispatcher.add_handler(CommandHandler("fetchmembers", fetch_members))
+    updater.start_polling()
+    updater.idle()
 
-# Start the bot
-updater.start_polling()
-updater.idle()
+if __name__ == '__main__':
+    main()
